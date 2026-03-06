@@ -110,15 +110,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="hello-world">Hello World!</h2>
 </section>
 <section id="level-1" class="level1">
-<h1>&gt;&lt;&gt; Level 1</h1>
+<h1>Level 1</h1>
 <section id="level-2-marinas-favorite" class="level2">
-<h2 class="anchored" data-anchor-id="level-2-marinas-favorite">&gt;&lt;&gt; &gt;&lt;&gt; Level 2 (Marina’s Favorite)</h2>
+<h2 class="anchored" data-anchor-id="level-2-marinas-favorite">Level 2 (Marina’s Favorite)</h2>
 <section id="level-3" class="level3">
-<h3 class="anchored" data-anchor-id="level-3">&gt;&lt;&gt; &gt;&lt;&gt; &gt;&lt;&gt; Level 3</h3>
+<h3 class="anchored" data-anchor-id="level-3">Level 3</h3>
 <section id="level-4" class="level4">
-<h4 class="anchored" data-anchor-id="level-4">&gt;&lt;&gt; &gt;&lt;&gt; &gt;&lt;&gt; &gt;&lt;&gt; Level 4</h4>
+<h4 class="anchored" data-anchor-id="level-4">Level 4</h4>
 <section id="level-5" class="level5">
-<h5 class="anchored" data-anchor-id="level-5">&gt;&lt;&gt; &gt;&lt;&gt; &gt;&lt;&gt; &gt;&lt;&gt; &gt;&lt;&gt; Level 5</h5>
+<h5 class="anchored" data-anchor-id="level-5">Level 5</h5>
 <p><strong>bold</strong> <em>italic</em> <strong><em>bold + italic</em></strong></p>
 <ul>
 <li>listing</li>
@@ -198,6 +198,128 @@ The following objects are masked from 'package:stats':
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read in data ----</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>messy_penguins <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"raw"</span>, <span class="st">"messy_penguins.csv"</span>)) </span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>nesting <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"raw"</span>, <span class="st">"nesting.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration">Data Exploration</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(messy_penguins)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Species    island bill.length..mm. bill.depth..mm. flipper_length_mm
+1    Adelie Torgersen             38.9            17.8               181
+2    Gentoo    Biscoe             47.5            15.0               218
+3    Adelie torgersen             40.6            19.0               199
+4    Adelie    BISCOE             34.5            18.1               187
+5    Adelie Torgersen             39.2            19.6               195
+6 Chinstrap     DREAM             50.7            19.7               203
+  body_mass_g    sex    observation_date
+1        3625 female         25-Mar-2007
+2        4950 female         16-Jan-2009
+3        4000   male          2009.09.17
+4        2900 female         19-May-2008
+5        4675   male 2007-01-25 14:30:00
+6        4050   male          2009.01.25</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#how many penguin species</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">n_distinct</span>(messy_penguins<span class="sc">$</span>Species) <span class="co">#3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(messy_penguins<span class="sc">$</span>Species) <span class="co">#"Adelie", "Gentoo", "Chinstrap"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Adelie"    "Gentoo"    "Chinstrap"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#what islands</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(messy_penguins<span class="sc">$</span>island) <span class="co">#case issues</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Torgersen" "Biscoe"    "torgersen" "BISCOE"    "DREAM"     "Dream"    
+[7] "dream"     "TORGERSEN" "biscoe"   </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#bill length</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">#range(clean_penguins$bill_length_mm, na.rm = TRUE) #-999, missing</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">#class(clean_penguins$bill_length_mm) #character</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">#dates weird</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">#head(clean_penguins) #formats weird </span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co">#check duplicates</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co">#get_dupes(clean_penguins) #could be intentional, could be duplicates</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="do">## worth checking duplicates with data collector, take notes, etc. ## </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="data-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="data-cleaning">Data Cleaning</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">## [ ] NAs?</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [X] unexpected negative values (bill_length_mm)</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [X] case (capitalization, island)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [X] inconsistent dates (observation_date)</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>clean_penguins <span class="ot">&lt;-</span> messy_penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="co">#standardize col names to lower snake case</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="do">## chose to mutate from clean w/ new column names ##</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>clean_penguins <span class="ot">&lt;-</span> clean_penguins <span class="sc">%&gt;%</span>   </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">island =</span> <span class="fu">str_to_title</span>(island)) <span class="sc">%&gt;%</span>  <span class="co">#island &gt; consistent case</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bill_length_mm =</span> <span class="fu">as.numeric</span>(bill_length_mm)) <span class="sc">%&gt;%</span>  <span class="co">#change to numeric, remove unexpected values</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bill_length_mm =</span> <span class="fu">case_when</span>(bill_length_mm <span class="sc">==</span> <span class="sc">-</span><span class="fl">999.</span> <span class="sc">~</span> <span class="cn">NA</span>, </span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">.default =</span> bill_length_mm)) <span class="sc">%&gt;%</span>  <span class="co">#change -999 to NA </span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">parse_date_time</span>(observation_date,<span class="co">#mutate to check</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>                                <span class="at">orders =</span> <span class="fu">c</span>(<span class="st">"dmy"</span>, <span class="st">"ymd"</span>, <span class="st">"mdy"</span>,</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">"ymd HMS"</span>))) <span class="sc">%&gt;%</span> <span class="co">#fix obsv date</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(<span class="at">col =</span> date, </span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"date"</span>, <span class="st">"time"</span>), <span class="co">#warning accounting for lack of time, OK!</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>           <span class="at">sep =</span> <span class="st">" "</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as.Date</span>(date)) <span class="sc">%&gt;%</span> <span class="co">#change to class: date</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(time, observation_date)) <span class="sc">%&gt;%</span>  <span class="co">#remove: time, original obsv date</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">year</span>(date), <span class="co">#create year column (####)</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">month =</span> <span class="fu">month</span>(date, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">abbr =</span> <span class="cn">FALSE</span>), <span class="co">#create month (LONG MONTH NAME)</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">day =</span> <span class="fu">day</span>(date), <span class="co">#create day column</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">day_of_year =</span> <span class="fu">yday</span>(date)) <span class="co">#create day of year column</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `mutate()`.
+ℹ In argument: `bill_length_mm = as.numeric(bill_length_mm)`.
+Caused by warning:
+! NAs introduced by coercion</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expected 2 pieces. Missing pieces filled with `NA` in 264 rows [1, 2, 3, 4, 6,
+9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 22, 25, 27, 28, ...].</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">## cleaning duplicates ## </span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(clean_penguins) <span class="co">#352 originally</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 352</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>clean_penguins <span class="ot">&lt;-</span> clean_penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(clean_penguins) <span class="co">#344 post cleanup </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 344</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="do">## and check! ## </span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(clean_penguins)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    species    island bill_length_mm bill_depth_mm flipper_length_mm
+1    Adelie Torgersen           38.9          17.8               181
+2    Gentoo    Biscoe           47.5          15.0               218
+3    Adelie Torgersen           40.6          19.0               199
+4    Adelie    Biscoe           34.5          18.1               187
+5    Adelie Torgersen           39.2          19.6               195
+6 Chinstrap     Dream           50.7          19.7               203
+  body_mass_g    sex       date year     month day day_of_year
+1        3625 female 2007-03-25 2007     March  25          84
+2        4950 female 2009-01-16 2009   January  16          16
+3        4000   male 2009-09-17 2009 September  17         260
+4        2900 female 2008-05-19 2008       May  19         140
+5        4675   male 2007-01-25 2007   January  25          25
+6        4050   male 2009-01-25 2009   January  25          25</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="do">## save data </span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(clean_penguins, <span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"processed"</span>, <span class="st">"penguins.csv"</span>))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># share data post clean up </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>

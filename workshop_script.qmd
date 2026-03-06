@@ -85,14 +85,14 @@ unique(messy_penguins$Species) #"Adelie", "Gentoo", "Chinstrap"
 unique(messy_penguins$island) #case issues
 
 #bill length
-range(clean_penguins$bill_length_mm, na.rm = TRUE) #-999, missing
-class(clean_penguins$bill_length_mm) #character
+#range(clean_penguins$bill_length_mm, na.rm = TRUE) #-999, missing
+#class(clean_penguins$bill_length_mm) #character
 
 #dates weird
-head(clean_penguins) #formats weird 
+#head(clean_penguins) #formats weird 
 
 #check duplicates
-get_dupes(clean_penguins) #could be intentional, could be duplicates
+#get_dupes(clean_penguins) #could be intentional, could be duplicates
 ## worth checking duplicates with data collector, take notes, etc. ## 
 
 ```
@@ -141,3 +141,77 @@ head(clean_penguins)
 write.csv(clean_penguins, here("data", "processed", "penguins.csv"))
 # share data post clean up 
 ```
+
+## Data Visualization
+
+```{r}
+# Simple bar chart 
+penguin_bar <- ggplot(clean_penguins %>% 
+         mutate(species = fct_rev(fct_infreq(species)))) + #order bars by obsv
+  geom_bar(aes(x = species)) +
+  geom_text(aes(x = species, label = after_stat(count)), #after_stat = funky
+            stat = "count", #also funky
+            hjust = 2, #move label 
+            color = "white", #label color
+            size = 5) + #label size
+  labs(title = "Penguin counts at Palmer Station LTER", 
+       subtitle = "2007-2009",
+       caption = "Data: Gorman et al. 2014 via {palmerpenguins}") +
+  coord_flip() + #flip x and y axes; up to personal preference/audience 
+  theme_minimal(base_size = 14) + #change universal font size -> larger
+  theme(
+    axis.title = element_blank(), #remove axes titles
+    axis.text.x = element_blank(), #remove X axis units
+    panel.grid = element_blank(), #remove bg lines
+    plot.caption = element_text(face = "italic",
+                                color = "darkgray",
+                                size = rel(0.7)), #70% of 14 
+    plot.title.position = "plot", #moved alignment of title 
+    plot.title = element_text(face = "bold"),
+    plot.margin = margin(20, 20, 20, 20) #adjust plot margins
+    ) #COMPLETE! 
+
+# ggsave(here("figs", "pen_bar.png"), 
+#        penguin_bar, 
+#        width = 6) #default units = in
+## MASS COMMENT OUT --> CTRL + ALT + C 
+```
+
+
+```{r}
+#penguin size scatterplot 
+pen_scatter <- ggplot(clean_penguins,
+       aes(x = bill_length_mm, 
+           y = bill_depth_mm, 
+           color = species)) +
+  geom_point(aes(shape = species),
+             size = 3, 
+             alpha = 0.7) +
+  #geom_smooth(method = "lm", #method -> linear model 
+              #se = FALSE) + #no standard error bars
+  geomtextpath::geom_labelsmooth(aes(label = species), 
+    method = "lm", #linear model 
+    size = 5,
+    linewidth = 1) +
+  scale_color_manual(values = c("#648FFF", "#DC267F", "#FFB000")) +
+  labs(title = "Penguin bill dimensions",
+       subtitle = "Bill length and depth for Adelie, Chinstrap, and Gentoo penguins at Palmer Station LTER",
+       x = "Bill length (mm)",
+       y = "Bill depth (mm)",
+       color = "Penguin species", #legend
+       shape = "Penguin species") + #legend
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title.position = "plot", 
+    plot.margin = margin(10,10,10,10),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0)),
+    axis.title.y = element_text(margin = margin(0, 15, 0, 0)),
+    plot.title = element_text(face = "bold"),
+    legend.position = "none" 
+  )
+  
+ggsave(here("figs", "pen_scatter.png"),
+       pen_scatter, width = 12, height = 8)
+```
+
+
