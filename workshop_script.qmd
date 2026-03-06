@@ -9,15 +9,15 @@ editor_options:
 
 ## Hello World!
 
-# \>\<\> Level 1
+# Level 1
 
-## \>\<\> \>\<\> Level 2 (Marina's Favorite)
+## Level 2 (Marina's Favorite)
 
-### \>\<\> \>\<\> \>\<\> Level 3
+### Level 3
 
-#### \>\<\> \>\<\> \>\<\> \>\<\> Level 4
+#### Level 4
 
-##### \>\<\> \>\<\> \>\<\> \>\<\> \>\<\> Level 5
+##### Level 5
 
 **bold** *italic* ***bold + italic***
 
@@ -73,3 +73,71 @@ messy_penguins <- read.csv(here("data", "raw", "messy_penguins.csv"))
 nesting <- read.csv(here("data", "raw", "nesting.csv"))
 ```
 
+## Data Exploration 
+```{r}
+head(messy_penguins)
+
+#how many penguin species
+n_distinct(messy_penguins$Species) #3
+unique(messy_penguins$Species) #"Adelie", "Gentoo", "Chinstrap"
+
+#what islands
+unique(messy_penguins$island) #case issues
+
+#bill length
+range(clean_penguins$bill_length_mm, na.rm = TRUE) #-999, missing
+class(clean_penguins$bill_length_mm) #character
+
+#dates weird
+head(clean_penguins) #formats weird 
+
+#check duplicates
+get_dupes(clean_penguins) #could be intentional, could be duplicates
+## worth checking duplicates with data collector, take notes, etc. ## 
+
+```
+
+## Data Cleaning 
+```{r}
+## [ ] NAs?
+## [X] unexpected negative values (bill_length_mm)
+## [X] case (capitalization, island)
+## [X] inconsistent dates (observation_date)
+
+clean_penguins <- messy_penguins %>% 
+  clean_names() #standardize col names to lower snake case
+
+## chose to mutate from clean w/ new column names ##
+
+clean_penguins <- clean_penguins %>%   
+  mutate(island = str_to_title(island)) %>%  #island > consistent case
+  mutate(bill_length_mm = as.numeric(bill_length_mm)) %>%  #change to numeric, remove unexpected values
+  mutate(bill_length_mm = case_when(bill_length_mm == -999. ~ NA, 
+                                    .default = bill_length_mm)) %>%  #change -999 to NA 
+  mutate(date = parse_date_time(observation_date,#mutate to check
+                                orders = c("dmy", "ymd", "mdy",
+                                           "ymd HMS"))) %>% #fix obsv date
+  separate(col = date, 
+           into = c("date", "time"), #warning accounting for lack of time, OK!
+           sep = " ") %>% 
+  mutate(date = as.Date(date)) %>% #change to class: date
+  select(-c(time, observation_date)) %>%  #remove: time, original obsv date
+  mutate(year = year(date), #create year column (####)
+         month = month(date, label = TRUE, abbr = FALSE), #create month (LONG MONTH NAME)
+         day = day(date), #create day column
+         day_of_year = yday(date)) #create day of year column
+
+## cleaning duplicates ## 
+nrow(clean_penguins) #352 originally
+
+clean_penguins <- clean_penguins %>% 
+  distinct()
+
+nrow(clean_penguins) #344 post cleanup 
+## and check! ## 
+head(clean_penguins)
+
+## save data 
+write.csv(clean_penguins, here("data", "processed", "penguins.csv"))
+# share data post clean up 
+```
