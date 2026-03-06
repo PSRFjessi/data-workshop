@@ -1,3 +1,6 @@
+#git best practices: push scripts, not data (sensitive, large, etc.) 
+data/
+
 # History files
 .Rhistory
 .Rapp.history

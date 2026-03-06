@@ -1,0 +1,75 @@
+---
+title: "Data Workshop"
+author: "JF"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+## Hello World!
+
+# \>\<\> Level 1
+
+## \>\<\> \>\<\> Level 2 (Marina's Favorite)
+
+### \>\<\> \>\<\> \>\<\> Level 3
+
+#### \>\<\> \>\<\> \>\<\> \>\<\> Level 4
+
+##### \>\<\> \>\<\> \>\<\> \>\<\> \>\<\> Level 5
+
+**bold** *italic* ***bold + italic***
+
+-   listing
+-   things
+
+[save us, link!](https://restorationfund.org)
+
+```{r}
+## CTRL + ALT + I to make chunk ##
+2 + 2
+```
+
+```{r}
+#| code-fold: true
+
+# this code only shows up if you click on dropdown to open
+2+2
+```
+
+```{r}
+#| echo: false
+
+# hides code, shows output
+2+2
+```
+
+```{r}
+#| include: false
+
+# this code will run but hides both code + output
+2+2
+```
+
+# Script Organization feat. Penguins
+
+## About (pseudocode)
+penguins! penguins! penguins! penguins! penguins! penguins! penguins! 
+
+## Setup 
+```{r}
+# load libraries ---- 
+library(tidyverse)
+library(here)
+library(janitor)
+library(lubridate) 
+library(gghighlight)
+library(sysfonts)
+library(showtext)
+
+# read in data ----
+messy_penguins <- read.csv(here("data", "raw", "messy_penguins.csv")) 
+nesting <- read.csv(here("data", "raw", "nesting.csv"))
+```
+
